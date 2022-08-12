@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 
+// resourceful controller
 class ContactController extends Controller
 {
     public function index(){
@@ -18,14 +20,7 @@ class ContactController extends Controller
         return view('contacts.create');
     }
 
-    public function save(Request $request){
-
-//        $contact = new Contact();
-//        $contact->first_name = $request->first_name;
-//        $contact->last_name = $request->last_name;
-//        $contact->email = $request->email;
-//        $contact->phone_number = $request->phone_number;
-//        $contact->save();
+    public function store(ContactRequest $request){
 
         Contact::query()->create([
             "first_name" => $request->first_name,
@@ -34,28 +29,22 @@ class ContactController extends Controller
             "email" => $request->email,
         ]);
 
-        return redirect('/contacts');
+        return redirect()->route('contacts.index');
     }
 
-    public function show(Request $request){
-        $contactId = $request->id;
-        $contact = Contact::query()->findOrFail($contactId);
+    public function show(Request $request, Contact $contact){
         return view("contacts.show", [
             "contact" => $contact
         ]);
     }
 
-    public function edit(Request $request){
-        $contactId = $request->id;
-        $contact = Contact::query()->findOrFail($contactId);
+    public function edit(Request $request, Contact $contact){
         return view("contacts.edit", [
             "contact" => $contact
         ]);
     }
 
-    public function update(Request $request){
-        $contactId = $request->id;
-        $contact = Contact::query()->findOrFail($contactId);
+    public function update(ContactRequest $request, Contact $contact){
         $contact->update([
             "first_name" => $request->first_name,
             "last_name" => $request->last_name,
@@ -63,13 +52,11 @@ class ContactController extends Controller
             "email" => $request->email,
         ]);
 
-        return redirect('/contacts');
+        return redirect()->route('contacts.index');
     }
 
-    public function destroy(Request $request){
-        $contactId = $request->id;
-        $contact = Contact::query()->findOrFail($contactId);
+    public function destroy(Request $request, Contact $contact){
         $contact->delete();
-        return redirect('/contacts');
+        return redirect()->route('contacts.index');
     }
 }

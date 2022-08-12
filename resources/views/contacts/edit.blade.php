@@ -1,26 +1,32 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+@extends('layouts.app')
 
-<form action="/contacts/{{ request()->id }}" method="POST">
+@section('title', 'Edit contact: '.$contact->first_name." ".$contact->last_name)
 
-    @csrf
-    @method('PUT')
-    <input type="text" name="first_name" id="" placeholder="Ime..." value="{{ $contact->first_name }}">
-    <input type="text" name="last_name" id="" placeholder="Prezime..." value="{{ $contact->last_name }}">
-    <input type="text" name="phone_number" id="" placeholder="Br. telefona..." value="{{ $contact->phone_number }}">
-    <input type="email" name="email" id="" placeholder="Email..." value="{{ $contact->email }}">
+@section('content')
 
-    <button>SAVE</button>
+    <form action="{{ route('contacts.update', ['contact' => $contact]) }}" method="POST">
 
-</form>
+        @csrf
+        @method('PUT')
+        <input type="text" name="first_name" id="" placeholder="Ime..." value="{{ $contact->first_name }}">
+        @error('first_name')
+            <span>{{ $message }}</span>
+        @enderror
+        <input type="text" name="last_name" id="" placeholder="Prezime..." value="{{ $contact->last_name }}">
+        @error('last_name')
+            <span>{{ $message }}</span>
+        @enderror
+        <input type="text" name="phone_number" id="" placeholder="Br. telefona..." value="{{ $contact->phone_number }}">
+        @error('phone_number')
+            <span>{{ $message }}</span>
+        @enderror
+        <input type="email" name="email" id="" placeholder="Email..." value="{{ $contact->email }}">
+        @error('email')
+            <span>{{ $message }}</span>
+        @enderror
 
-</body>
-</html>
+        <button>SAVE</button>
+
+    </form>
+
+@endsection

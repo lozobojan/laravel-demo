@@ -19,13 +19,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('dashboard', [WebsiteController::class, 'dashboard']);
+Route::get('dashboard', [WebsiteController::class, 'dashboard'])->name('dashboard');
 
-// contact-related routes
-Route::get('contacts', [ContactController::class, 'index']);
-Route::get('contacts/create', [ContactController::class, 'create']);
-Route::get('contacts/{id}', [ContactController::class, 'show']);
-Route::get('contacts/{id}/edit', [ContactController::class, 'edit']);
-Route::post('contacts', [ContactController::class, 'save']);
-Route::put('contacts/{id}', [ContactController::class, 'update']);
-Route::delete('contacts/{id}', [ContactController::class, 'destroy']);
+// route-model binding
+Route::resource('contacts', ContactController::class);
