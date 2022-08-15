@@ -4,13 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
+use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 
 // resourceful controller
 class ContactController extends Controller
 {
-    public function index(){
-        $contacts = Contact::all();
+    public function index(Request $request){
+
+        $contacts =
+            Contact::query()
+            ->when($request->has('searchTerm'), function($query) use ($request){
+                $query->where('first_name', 'like', '%'.$request->searchTerm.'%');
+                $query->orWhere('last_name', 'like', '%'.$request->searchTerm.'%');
+            })
+            ->paginate(Contact::PER_PAGE)->withQueryString();
+
         return view('contacts.index', [
             "contacts" => $contacts
         ]);
