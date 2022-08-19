@@ -12,4 +12,8 @@ class Contact extends Model
     const PER_PAGE = 10;
 
     protected $guarded = ['id'];
+
+    public function city(){
+        return $this->belongsTo(City::class);
+    }
 }

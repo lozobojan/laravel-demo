@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\ContactController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WebsiteController;
 
@@ -15,11 +17,19 @@ use App\Http\Controllers\WebsiteController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::group(['middleware' => 'auth'], function ($router){
+
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('dashboard', [WebsiteController::class, 'dashboard'])->name('dashboard');
+    // route-model binding
+    Route::resource('contacts', ContactController::class);
+    Route::get('/cites-by-country/{country}', [CityController::class, 'getCitiesByCountry'])->name('get-cities-by-country');
+
 });
 
-Route::get('dashboard', [WebsiteController::class, 'dashboard'])->name('dashboard');
 
-// route-model binding
-Route::resource('contacts', ContactController::class);
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

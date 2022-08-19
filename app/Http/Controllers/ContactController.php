@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
+use App\Models\Country;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 
@@ -26,18 +27,13 @@ class ContactController extends Controller
     }
 
     public function create(){
-        return view('contacts.create');
+        return view('contacts.create', [
+            'countries' => Country::query()->orderBy('name', 'ASC')->get()
+        ]);
     }
 
     public function store(ContactRequest $request){
-
-        Contact::query()->create([
-            "first_name" => $request->first_name,
-            "last_name" => $request->last_name,
-            "phone_number" => $request->phone_number,
-            "email" => $request->email,
-        ]);
-
+        Contact::query()->create($request->all());
         return redirect()->route('contacts.index');
     }
 

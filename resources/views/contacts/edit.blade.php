@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Edit contact: '.$contact->first_name." ".$contact->last_name)
 

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'All contacts')
 
@@ -25,6 +25,8 @@
                         <th>Prezime</th>
                         <th>Mail</th>
                         <th>Telefon</th>
+                        <th>Grad</th>
+                        <th>Drzava</th>
                         <th>Detalji</th>
                         <th>Izmjena</th>
                         <th>Brisanje</th>
@@ -38,13 +40,15 @@
                             <td>{{ $contact->last_name }}</td>
                             <td>{{ $contact->email }}</td>
                             <td>{{ $contact->phone_number }}</td>
+                            <td>{{ $contact->city->name }}</td>
+                            <td>{{ $contact->city->country->name }}</td>
                             <td>
-                                <a href="{{ route('contacts.show', ['contact' => $contact]) }}" class="btn btn-primary">
+                                <a href="{{ route('contacts.show', ['contact' => $contact]) }}" class="btn btn-primary btn-sm">
                                     pogledaj
                                 </a>
                             </td>
                             <td>
-                                <a href="{{ route('contacts.edit', ['contact' => $contact]) }}" class="btn btn-warning">
+                                <a href="{{ route('contacts.edit', ['contact' => $contact]) }}" class="btn btn-warning btn-sm">
                                     izmijeni
                                 </a>
                             </td>
@@ -52,7 +56,7 @@
                                 <form action="{{ route('contacts.destroy', ['contact' => $contact]) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-danger">brisanje</button>
+                                    <button class="btn btn-danger btn-sm">brisanje</button>
                                 </form>
                             </td>
                         </tr>
