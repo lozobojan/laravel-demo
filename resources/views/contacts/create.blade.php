@@ -7,7 +7,7 @@
     <div class="row mt-3">
         <div class="col-12">
 
-            <form action="{{ route('contacts.store') }}" method="POST">
+            <form action="{{ route('contacts.store') }}" method="POST" enctype="multipart/form-data">
 
                 <div class="row">
                     <div class="col-6">
@@ -54,6 +54,12 @@
                         @error('city_id')
                         <span>{{ $message }}</span>
                         @enderror
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <input type="file" name="images[]" class="form-control" multiple>
                     </div>
                 </div>
 

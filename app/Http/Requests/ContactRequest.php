@@ -28,7 +28,8 @@ class ContactRequest extends FormRequest
             "last_name" => ["required", "min:3", "max:255"],
             "phone_number" => ["required", "min:9", "max:50"],
             "email" => ["required", "email"],
-            "city_id" => ["required", "exists:cities,id"]
+            "city_id" => ["required", "exists:cities,id"],
+            "images.*" => ["file", "image"]
         ];
     }
 

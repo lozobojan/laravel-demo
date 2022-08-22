@@ -27,6 +27,7 @@ Route::group(['middleware' => 'auth'], function ($router){
     // route-model binding
     Route::resource('contacts', ContactController::class);
     Route::get('/cites-by-country/{country}', [CityController::class, 'getCitiesByCountry'])->name('get-cities-by-country');
+    Route::get('{contact}/download-image', [ContactController::class, 'downloadImage'])->name('download-image');
 
 });
 

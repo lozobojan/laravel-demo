@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\Country;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 // resourceful controller
 class ContactController extends Controller
@@ -33,13 +34,23 @@ class ContactController extends Controller
     }
 
     public function store(ContactRequest $request){
-        Contact::query()->create($request->all());
+        $newContact = Contact::query()->create($request->except(['images']));
+
+        foreach ($request->images as $image) {
+            $path = Storage::put('images', $image);
+            $newContact->images()->create([
+                'path' => $path,
+                'order' => $newContact->images()->count() + 1
+            ]);
+        }
+
         return redirect()->route('contacts.index');
     }
 
     public function show(Request $request, Contact $contact){
         return view("contacts.show", [
-            "contact" => $contact
+            "contact" => $contact,
+            "profileImagePath" => Storage::url($contact->profile_photo_path)
         ]);
     }
 
@@ -63,5 +74,9 @@ class ContactController extends Controller
     public function destroy(Request $request, Contact $contact){
         $contact->delete();
         return redirect()->route('contacts.index');
+    }
+
+    public function downloadImage(Request $request, Contact $contact){
+        return Storage::download($contact->profile_photo_path);
     }
 }
