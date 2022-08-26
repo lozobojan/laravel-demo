@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChangeLanguageController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,7 @@ Route::group(['middleware' => 'auth'], function ($router){
 
 });
 
+Route::get('change-language/{locale}', ChangeLanguageController::class)->name('change-language');
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

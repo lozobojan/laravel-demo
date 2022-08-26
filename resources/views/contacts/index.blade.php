@@ -11,7 +11,7 @@
             </form>
         </div>
         <div class="col-6">
-            <a href="{{ route('contacts.create') }}" class="btn btn-success float-right">+ Dodaj novi kontakt</a>
+            <a href="{{ route('contacts.create') }}" class="btn btn-success float-right">+ {{ __('contacts.add_new_contact') }}</a>
         </div>
     </div>
 
@@ -21,15 +21,15 @@
             <table class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th>Ime</th>
-                        <th>Prezime</th>
-                        <th>Mail</th>
-                        <th>Telefon</th>
-                        <th>Grad</th>
-                        <th>Drzava</th>
-                        <th>Detalji</th>
-                        <th>Izmjena</th>
-                        <th>Brisanje</th>
+                        <th>{{ __('contacts.table.first_name') }}</th>
+                        <th>{{ __('contacts.table.last_name') }}</th>
+                        <th>{{ __('contacts.table.email') }}</th>
+                        <th>{{ __('contacts.table.phone_number') }}</th>
+                        <th>{{ __('contacts.table.city') }}</th>
+                        <th>{{ __('contacts.table.country') }}</th>
+                        <th>{{ __('contacts.table.details') }}</th>
+                        <th>{{ __('contacts.table.edit') }}</th>
+                        <th>{{ __('contacts.table.delete') }}</th>
                     </tr>
                 </thead>
 
@@ -53,10 +53,10 @@
                                 </a>
                             </td>
                             <td>
-                                <form action="{{ route('contacts.destroy', ['contact' => $contact]) }}" method="POST">
+                                <form action="{{ route('contacts.destroy', ['contact' => $contact]) }}" method="POST" id="delete-form{{ $contact->id }}">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-danger btn-sm">brisanje</button>
+                                    <a class="btn btn-danger btn-sm" onclick="confirmDelete({{ $contact->id }})">brisanje</a>
                                 </form>
                             </td>
                         </tr>
@@ -75,4 +75,14 @@
     </div>
 
 
+@endsection
+
+@section('additional_scripts')
+    <script>
+        function confirmDelete(contactId){
+            if(confirm("Da li ste sigurni?")){
+                document.getElementById("delete-form"+contactId).submit();
+            }
+        }
+    </script>
 @endsection

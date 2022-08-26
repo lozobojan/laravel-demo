@@ -14,6 +14,8 @@ class ContactController extends Controller
 {
     public function index(Request $request){
 
+
+
         $contacts =
             Contact::query()
             ->when($request->has('searchTerm'), function($query) use ($request){
@@ -36,12 +38,14 @@ class ContactController extends Controller
     public function store(ContactRequest $request){
         $newContact = Contact::query()->create($request->except(['images']));
 
-        foreach ($request->images as $image) {
-            $path = Storage::put('images', $image);
-            $newContact->images()->create([
-                'path' => $path,
-                'order' => $newContact->images()->count() + 1
-            ]);
+        if($request->has('images')){
+            foreach ($request->images as $image) {
+                $path = Storage::put('images', $image);
+                $newContact->images()->create([
+                    'path' => $path,
+                    'order' => $newContact->images()->count() + 1
+                ]);
+            }
         }
 
         return redirect()->route('contacts.index');
@@ -56,23 +60,21 @@ class ContactController extends Controller
 
     public function edit(Request $request, Contact $contact){
         return view("contacts.edit", [
-            "contact" => $contact
+            "contact" => $contact,
+            "countries" => Country::all()
         ]);
     }
 
     public function update(ContactRequest $request, Contact $contact){
-        $contact->update([
-            "first_name" => $request->first_name,
-            "last_name" => $request->last_name,
-            "phone_number" => $request->phone_number,
-            "email" => $request->email,
-        ]);
-
+        $contact->update($request->all());
         return redirect()->route('contacts.index');
     }
 
     public function destroy(Request $request, Contact $contact){
+
+        $contact->deleteImages();
         $contact->delete();
+
         return redirect()->route('contacts.index');
     }
 

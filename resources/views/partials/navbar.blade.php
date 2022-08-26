@@ -10,6 +10,13 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
 
+        <li class="nav-item dropdown">
+            <a @class(['nav-link', 'active' => app()->getLocale() == 'en' ]) href="{{ route('change-language', ['locale' => 'en']) }}">EN</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a @class(['nav-link', 'active' => app()->getLocale() == 'me' ]) href="{{ route('change-language', ['locale' => 'me']) }}">ME</a>
+        </li>
+
         <!-- Messages Dropdown Menu -->
         <li class="nav-item dropdown">
             <a class="nav-link" href="backend/auth/logout.php">
